@@ -1,0 +1,30 @@
+
+https://www.syncfusion.com/blogs/post/react-digital-ecommerce-app.aspx
+
+https://www.syncfusion.com/blogs/post/react-ecommerce-app-part-2.aspx
+
+npm create vite project-name --template react-ts
+cd project-name
+npm install 
+npm install react-router-dom zustand axios
+
+
+technology stack and set up of the app’s boilerplate - Used React as this project’s front-end JavaScript framework, Zustand as state management tool, while React-Router-V6 will handle client-side routing. Lastly, aided by Synfusion React component library in the development process.
+
+Yes, that's correct. The line of code: 
+
+```jsx
+return currentUser ? <Outlet /> : <Navigate to="/login" replace />;
+```
+
+is using a ternary operator to conditionally render either an `<Outlet />` component or a `<Navigate />` component.
+
+If `currentUser` is truthy (meaning the user is authenticated), then the `<Outlet />` component is rendered. The `<Outlet />` component is a placeholder component used in `react-router-dom` that renders the child routes.
+
+If `currentUser` is falsy (meaning the user is not authenticated), then the `<Navigate />` component is rendered with the `to="/login"` prop, which navigates the user to the login page. The `replace` prop being `true` means that this navigation will replace the current entry in the history stack. So, after this navigation, the user won't be able to go back to the previous page using the browser's back button.
+
+In the context of React Router, the `<Outlet />` component is often referred to as a "placeholder" because it doesn't render any content of its own. Instead, it serves as a placeholder in the component hierarchy where child routes will be rendered.
+
+When you define nested routes in your application, the parent route uses the `<Outlet />` component to specify where its child routes should be rendered. When a child route is activated, its content is rendered in place of the parent's `<Outlet />` component.
+
+So, the `<Outlet />` component doesn't have any visual representation itself, but it dictates where the content of child routes appears. That's why it's often referred to as a "placeholder" component.

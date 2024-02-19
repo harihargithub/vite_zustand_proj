@@ -1,0 +1,3 @@
+https://www.syncfusion.com/blogs/post/react-digital-ecommerce-app.aspx
+
+technology stack and set up of the app’s boilerplate - Used React as this project’s front-end JavaScript framework, Zustand as state management tool, while React-Router-V6 will handle client-side routing. Lastly, aided by Synfusion React component library in the development process.

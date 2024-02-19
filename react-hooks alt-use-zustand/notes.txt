@@ -1,0 +1,187 @@
+The three dots `...` in JavaScript are used for the spread operator or rest parameters, not for destructuring directly. However, they can be used in conjunction with destructuring.
+
+1. **Spread Operator**: When used in an object or array literal, it creates a new object or array using the properties or elements of the existing object or array.
+
+```javascript
+let obj1 = { a: 1, b: 2 };
+let obj2 = { ...obj1, c: 3 }; // obj2 is now { a: 1, b: 2, c: 3 }
+```
+
+2. **Rest Parameters**: When used in a function's parameter list, it collects the remaining arguments into an array.
+
+```javascript
+function foo(a, ...rest) {
+  console.log(a); // 1
+  console.log(rest); // [2, 3, 4]
+}
+
+foo(1, 2, 3, 4);
+```
+
+3. **With Destructuring**: When used in destructuring, it collects the remaining (undeclared) properties of an object into a new object.
+
+```javascript
+let { a, ...rest } = { a: 1, b: 2, c: 3 };
+console.log(a); // 1
+console.log(rest); // { b: 2, c: 3 }
+```
+
+In your code, you're not using the `...` operator. You're using basic destructuring to extract `inputText` and `setinputText` from the object returned by `useStore()`.
+
+In the `increment` function, `set(state)` is used because the new state depends on the previous state. Specifically, the new count is the old count plus one, so you need to access the old count via `state.count`.
+
+In the `setinputText` function, `set(() => ({ inputText: txt }))` is used. Here, the new state does not depend on the old state. The new `inputText` is completely determined by the `txt` parameter, so there's no need to access the old state.
+
+However, it's worth noting that you could write the `setinputText` function in a similar way to `increment` if you wanted to, like this:
+
+```javascript
+setinputText: (txt) => set((state) => ({ inputText: txt })),
+```  => set with state parameter throws error so set to empty
+
+This would work exactly the same way as your current code. The `state` parameter is not used in the function, so it doesn't matter whether you include it or not.
+
+Correct, Zustand does not inherently require the use of the `props` keyword. Zustand is a state management library for React, and it provides a way to create a global state that can be accessed from any component without needing to pass the state down through props.
+
+In traditional React state management, you would pass state and state update functions from a parent component to a child component via props. However, with Zustand, you create a global store that any component can access using a custom hook. This eliminates the need to pass state around through props.
+
+Here's a basic example of Zustand usage:
+
+```javascript
+import create from 'zustand'
+
+// Create a store
+const useStore = create(set => ({
+  count: 0,
+  increment: () => set(state => ({ count: state.count + 1 })),
+}))
+
+// In a component
+function Component() {
+  const { count, increment } = useStore()
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={increment}>Increment</button>
+    </div>
+  )
+}
+```
+
+In this example, `Component` can access and update the `count` state without needing to receive it as a prop. This is because `useStore` is a custom hook that returns the `count` state and the `increment` function. The `increment` function uses the `set` function provided by Zustand to update the `count` state. 
+
+
+Yes, that's correct. Axios throws its own error when a request fails for any reason. The error object that Axios throws includes a lot of useful information about the failed request, such as the error message, the config of the request, and the HTTP status code.
+
+In your catch block, you're logging the error object, which is why you see the detailed error message in the console. This is generally a good practice because it allows you to understand why the request failed.
+
+However, you might want to handle specific types of errors differently. For example, you might want to show a user-friendly error message to the user when a request fails. To do this, you can check the properties of the error object and handle different types of errors accordingly.
+
+Here's an example:
+Axios is a popular, promise-based HTTP client that works both in the browser and in a node.js environment. It provides a single API for dealing with XMLHttpRequests and node's http interface. Here's a breakdown of the code you posted.
+
+```javascript
+axiosget: async () => {
+  try {
+    const res = await axios.get(
+      'https://jsonplaceholder.typicode.com/comments',
+    );
+    set({ data: res.data });
+  } catch (error) {
+    console.error('axios response', error);
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('Error', error.message);
+    }
+  }
+},
+```
+Axios is a popular, promise-based HTTP client that works both in the browser and in a node.js environment. It provides a single API for dealing with XMLHttpRequests and node's http interface. Here's a breakdown of the code you posted:
+
+```javascript
+axiosget: async () => {
+  try {
+    // The `await` keyword causes axios.get() to return a promise and wait for it to resolve.
+    // The resolved value is the server's response.
+    const res = await axios.get(
+      'https://jsonplaceholder.typicode.com/comments',
+    );
+
+    // The response object (`res`) contains the server's response. `res.data` is the response body.
+    // The `set` function updates the state with the response data.
+    set({ data: res.data });
+  } catch (error) {
+    // If the request fails for any reason, the catch block is executed.
+    console.error('axios response', error);
+
+    // `error.response` is the server's response. This includes data, status, and headers properties.
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('Error', error.message);
+    }
+  }
+},
+```
+
+This function, `axiosget`, is an asynchronous function that sends a GET request to the specified URL and updates the state with the response data. If the request fails, it logs the error details.
+
+In this code, the catch block checks the properties of the error object and logs different information depending on the type of error.
+
+store.js:21  axios response AxiosError {message: 'Network Error', name: 'AxiosError', code: 'ERR_NETWORK', config: {…}, request: XMLHttpRequest, …}
+overrideMethod @ console.js:213
+axiosget @ store.js:21
+await in axiosget (async)
+(anonymous) @ Eff.jsx:14
+store.js:30 XMLHttpRequest {onreadystatechange: null, readyState: 4, timeout: 0, withCredentials: false, upload: XMLHttpRequestUpload, …}
+store.js:16 
+GET https://jsonplaceholder.typicode.com/comments net::ERR_NETWORK_CHANGED
+
+To test an error scenario, you can use a testing library like Jest along with a library like axios-mock-adapter to mock the axios request and simulate an error response. Here's an example of how you can do it:
+
+```javascript
+// store.test.js
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import { act } from 'react-dom/test-utils';
+import { useStore } from './store';
+
+// This sets the mock adapter on the default instance
+var mock = new MockAdapter(axios);
+
+// Simulate an error response
+mock.onGet('https://jsonplaceholder.typicode.com/comments').reply(500);
+
+test('handles error during axiosget', async () => {
+  const { result } = renderHook(() => useStore());
+
+  await act(async () => {
+    await result.current.axiosget();
+  });
+
+  expect(console.error).toHaveBeenCalled();
+});
+```
+
+In this code, `mock.onGet(...).reply(500)` simulates an error response with a 500 status code when a GET request is made to 'https://jsonplaceholder.typicode.com/comments'. The test then calls `axiosget` and checks that `console.error` was called, which is what should happen in your store when the axios request fails.
+
+Please note that this is a simplified example and your actual test might need to be more complex depending on the specifics of your store and what you want to test. Also, you'll need to install the `axios-mock-adapter` and `@testing-library/react-hooks` libraries if you haven't already.

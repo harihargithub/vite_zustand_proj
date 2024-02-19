@@ -1,0 +1,68 @@
+VITE_ZUSTAND_PROJ
+|-- kanban-zustand
+|-- |-- node_modules
+|-- |-- public
+|-- |-- |-- vite.svg
+|-- |-- src
+|-- |-- |-- assets
+|-- |-- |-- |-- react.svg
+|-- |-- |-- components
+|-- |-- |-- |-- Column.css
+|-- |-- |-- |-- Column.jsx
+|-- |-- |-- |-- Task.css
+|-- |-- |-- |-- Task.jsx
+|-- |-- |-- |--App.css
+|-- |-- |-- |--App.jsx
+|-- |-- |-- |--index.css
+|-- |-- |-- |--main.jsx
+|-- |-- store.js
+|-- |-- Temp.jsx
+|-- .eslintrc.cjs
+|-- .gitignore
+|-- package.json
+|-- package-lock.json
+|-- index.html
+|-- index.js
+|-- vite.config.js
+
+
+
+npm create vite kanban-zustand
+npx: installed 1 in 2.57s
+√ Select a framework: » React
+√ Select a variant: » JavaScript
+
+Scaffolding project in C:\Users\nhari\OneDrive\Documents\iitr gl apcifsd\React JS 3\Zustand Projects\vite projects\kanban-zustand...
+
+Done. Now run:
+
+  cd kanban-zustand
+  
+npm install or npm i
+npm i zustand
+npm run dev
+
+nvm install latest
+nvm use 21.4.0
+
+npm i classnames
+
+ESLint configuration for react/prop-types helps you to define prop types for your components. If you have enabled the react/prop-types rule in your ESLint configuration.
+
+<button
+          onClick={() => {
+            addTask('hks' + state, state);
+          }}
+        >
+          Add
+        </button>  -> this was done for testing purpose
+
+
+
+@ store.js -> Added a new property called tasks to the initial state. This is necessary to store the list of tasks. Added a new action called addTask. This is necessary to add a new task to the list of tasks. Added a new action called updateTaskStatus. This is necessary to update the status of a task. Added a new action called deleteTask. This is necessary to delete a task from the list of tasks.
+
+
+@Task.jsx - > Added draggable attribute to the task. This is necessary to allow the task to be dragged. Added handleDragStart and handleDragEnd handlers to the task. The handleDragStart function sets the dataTransfer object to the id of the task being dragged. This is necessary to identify the task when it is dropped on the column. The handleDragEnd function removes the task from the list of tasks. This is necessary to prevent the task from being duplicated when it is dropped on the column. The status of the task is displayed in the task itself. This is necessary to allow the user to identify the status of the task when it is being dragged. On drop of the task, the status of the task is updated to the status of the dropped column. This is necessary to ensure that the task is moved to the correct column.
+
+
+@Column.jsx -> Added handleDrop and handleDragOver handlers to the column itself. This ensures that even if the column is empty, it can still accept dropped tasks. The handleDrop function updates the status of the dropped task to the status of the column. The handleDragOver function prevents the default behavior of the browser, which is to not allow dropping on an element. This is necessary to allow dropping on the column. The handleDragOver function also sets the dropEffect to move, which is a visual cue to the user that the task will be moved to the column. The handleDragStart function sets the dataTransfer object to the id of the task being dragged. This is necessary to identify the task when it is dropped on the column. The handleDragEnd function removes the task from the list of tasks. This is necessary to prevent the task from being duplicated when it is dropped on the column. 

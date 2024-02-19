@@ -1,0 +1,328 @@
+
+https://www.youtube.com/watch?v=KCr-UNsM3vA
+https://www.youtube.com/watch?v=IDKKB5bm4vM
+https://www.youtube.com/watch?v=m41aGndJNPU
+
+
+Break down courseStore.js code which uses the `zustand` library for state management:
+
+1. `import { create } from 'zustand';` - This line imports the `create` function from the `zustand` library. Zustand is a small, fast and scaleable bearbones state-management solution.
+
+2. `import { devtools, persist } from 'zustand/middleware';` - This line imports `devtools` and `persist` middleware from `zustand/middleware`. Middleware are functions that can process and modify state actions.
+
+  The active selection is creating a Zustand store using the `create` function. Zustand is a small, fast and scaleable bearbones state-management solution in JavaScript.
+
+The `create` function takes a hook as an argument, which in this case is a combination of `devtools` and `persist` wrapped around `courseStore`.
+
+`devtools` is a middleware that connects Zustand to the Redux DevTools extension. This allows you to inspect the state and actions in the Redux DevTools, even though Zustand is not based on Redux.
+
+`persist` is another middleware that saves the state to local storage whenever it changes, and restores it when the app loads. This allows the state to persist across sessions, even if the user closes and reopens the browser. The `persist` function takes two arguments: the store that you want to persist, and an options object. In the options object, `name` is the key under which the state will be stored in local storage.
+
+Yes, that's correct. The `persist` middleware from Zustand uses the local storage of the browser to store the state. Local storage is specific to the browser and is not shared between different browsers. 
+
+This means that if a user changes the state in one browser, those changes will not be reflected in a different browser, even if it's on the same device. The changes will persist across sessions in the same browser, but not across different browsers. 
+
+If you need to share state across different browsers or devices, you would typically use a server-side database and synchronize the state with the server using HTTP requests.
+
+So, in summary, this code is creating a Zustand store that is connected to the Redux DevTools and persists its state in local storage under the key 'courses'.
+
+
+3. `const courseStore = (set) => ({...});` - This is a function that defines the state and actions for managing courses. The `set` function is used to update the state.
+
+    const courseStore = (set) => ({
+  courses: [],
+  addCourse: (course) => {
+    set((state) => ({
+      courses: [course, ...state.courses],
+    }));
+  },
+
+  The selected code is a part of a state management setup using the `zustand` library in JavaScript. This code is defining a store for managing course data.
+
+The `courseStore` is a function that takes a `set` function as an argument. The `set` function is provided by `zustand` and is used to update the state.
+
+Inside the `courseStore` function, an object is returned. This object represents the initial state and the actions that can be performed on the state.
+
+The initial state is defined with `courses: []`. This sets up an empty array named `courses` that will hold the course data.
+
+An action named `addCourse` is also defined. This is a function that takes a `course` object as an argument. Inside this function, the `set` function is called to update the state.
+
+The `set` function is called with another function as its argument. This function takes the current `state` and returns a new state. The new state is an object with a `courses` property. The value of `courses` is a new array that contains the new `course` at the beginning, followed by the existing courses. This is done using the spread operator (`...state.courses`), which creates a new array by spreading out the elements of the existing `courses` array.
+
+In summary, this code sets up a state with an array of courses and an action to add a new course to the state.
+
+
+
+4. Inside `courseStore`, there are three actions defined: `addCourse`, `removeCourse`, and `toggleCourseStatus`. Each of these actions uses the `set` function to update the state.
+
+   - `addCourse: (course) => {...}` - This action adds a new course to the beginning of the courses array.
+
+   - `removeCourse: (courseId) => {...}` - This action removes a course from the courses array based on its id.
+removeCourse: (courseId) => {
+    set((state) => ({
+      courses: state.courses.filter((c) => c.id !== courseId),
+    }));
+  },
+The selected code is a part of a state management setup using the `zustand` library in JavaScript. This code is defining an action within a store for managing course data.
+
+The action is named `removeCourse` and it's a function that takes a `courseId` as an argument. This `courseId` is expected to be the unique identifier of a course that you want to remove from the state.
+
+Inside the `removeCourse` function, the `set` function is called to update the state. The `set` function is provided by `zustand` and is used to update the state.
+
+The `set` function is called with another function as its argument. This function takes the current `state` and returns a new state. The new state is an object with a `courses` property. The value of `courses` is a new array that is created by filtering out the course with the provided `courseId` from the existing `courses` array.
+
+The `filter` function is used to create a new array that includes all courses whose `id` is not equal to the provided `courseId`. This effectively removes the course with the provided `courseId` from the `courses` array.
+
+In summary, this code defines an action to remove a course from the state based on its `id` and returns a new state with the course removed and used in the `CourseList` component to remove a course from the state.
+               
+                <span>{course?.title}</span>
+                <button
+                  onClick={() => {
+                    removeCourse(course.id);
+                  }}
+                  className="delete-btn"
+                >
+                  Delete
+                </button>
+
+
+<span>{course?.title}</span>
+The selected code is a part of a JSX expression in a React component. JSX is a syntax extension for JavaScript that is used with React to describe what the UI should look like.
+
+In this code, a `span` HTML element is being created. Inside this `span` element, the `title` property of the `course` object is being displayed.
+
+The `course?.title` syntax is using the optional chaining operator (`?.`). This operator allows you to attempt to access a property on an object without having to check if the object is `null` or `undefined` first. If `course` is `null` or `undefined`, `course?.title` will return `undefined` and no error will be thrown.
+
+In the context of this component, `course` is likely a prop or a piece of state that represents a course object. The `title` property of the `course` object is the title of the course.
+
+In summary, this code is displaying the title of a course inside a `span` element, and it is using the optional chaining operator to safely access the `title` property of the `course` object.
+
+
+
+
+   - `toggleCourseStatus: (courseId) => {...}` - This action toggles the `completed` status of a course based on its id.
+toggleCourseStatus: (courseId) => {
+    set((state) => ({
+      courses: state.courses.map((course) =>
+        course.id === courseId
+          ? { ...course, completed: !course.completed }
+          : course,
+      ),
+    }));
+    The selected code is a part of a state management setup using the `zustand` library in JavaScript. This code is defining an action within a store for managing course data.
+
+The action is named `toggleCourseStatus` and it's a function that takes a `courseId` as an argument. This `courseId` is expected to be the unique identifier of a course whose completion status you want to toggle in the state.
+
+Inside the `toggleCourseStatus` function, the `set` function is called to update the state. The `set` function is provided by `zustand` and is used to update the state.
+
+The `set` function is called with another function as its argument. This function takes the current `state` and returns a new state. The new state is an object with a `courses` property. The value of `courses` is a new array that is created by mapping over the existing `courses` array.
+
+The `map` function is used to create a new array by transforming each course in the existing `courses` array. If the `id` of a course is equal to the provided `courseId`, a new course object is created with the same properties as the existing course (using the spread operator `...course`), but with the `completed` property toggled (`completed: !course.completed`). If the `id` of a course is not equal to the provided `courseId`, the course is included in the new array as is.
+
+In summary, this code defines an action to toggle the completion status of a course in the state based on its `id`.
+
+
+
+
+   useage of this toggleCourseStatus -
+   The `toggleCourseStatus` function is used in the `CourseList` component to toggle the completion status of a course.
+     <span className="course-item-col-1">
+                  <input
+                    checked={course.completed}
+                    type="checkbox"
+                    onChange={(e) => {
+                      toggleCourseStatus(course.id);
+                    }}
+                  />
+                </span>
+
+In the context of this component, `toggleCourseStatus` is retrieved from the `useCourseStore` hook, which is a custom hook that provides access to the course store state and actions. This function is defined in the course store and is used to update the `completed` property of a course in the state.
+
+In the `CourseList` component, `toggleCourseStatus` is used as an event handler for the `onChange` event of the checkbox input. When the checkbox is clicked, the `onChange` event is triggered, and `toggleCourseStatus` is called with the `id` of the course as an argument.
+
+The `toggleCourseStatus` function then updates the state by mapping over the `courses` array and toggling the `completed` property of the course with the provided `id`. If the `completed` property of a course is `true`, it will be set to `false`, and vice versa.
+
+This allows the user to mark a course as completed or not completed by clicking the checkbox. The completion status of the course is visually indicated by the checkbox being checked or unchecked, and the background color of the course item being green or white.
+
+Yes, you are correct. The `toggleCourseStatus` function is declared in the `useCourseStore` state management setup, and it is used within the `CourseList` component. This is a common pattern in React applications where state management functions are declared in a global store (in this case, `useCourseStore`) and then used within individual components (like `CourseList`). This allows for state changes to be handled globally and reflect across all components that use this state.
+
+
+5. `const useCourseStore = create(...);` - This line creates the store using the `create` function from `zustand`. It uses the `devtools` and `persist` middleware. `devtools` allows you to inspect the state and actions in the Redux DevTools extension. `persist` allows the state to be saved and loaded from localStorage.
+
+6. `export default useCourseStore;` - This line exports the `useCourseStore` hook so it can be used in other parts of the application.
+
+This code is written in a functional programming style and uses ES6 features like arrow functions and spread syntax. It's a common pattern for state management in React applications.
+
+
+const handleCourseSubmit = () => {
+       // event.preventDefault();
+    if (!courseTitle) return alert('please add a course title');
+    addCourse({
+      id: Math.ceil(Math.random() * 1000000),
+      title: courseTitle,
+    });
+    setCourseTitle('');
+  };
+
+No, event.preventDefault() is not required in this context.
+
+The event.preventDefault() method is typically used in form submission event handlers to prevent a full page reload, which is the default behavior of form submissions in HTML.
+
+In your handleCourseSubmit function, you're handling a button click event, not a form submission event. The click event doesn't cause a page reload, so there's no need to prevent the default behavior.
+
+
+.jsx vs .tsx: Both .jsx and .tsx are used in React development. .jsx is used when you're writing JavaScript, and .tsx is used when you're writing TypeScript. TypeScript is a superset of JavaScript that adds static types. Whether you should use TypeScript or JavaScript depends on your project's needs. TypeScript can help catch errors at compile time, make your code more self-documenting, and improve tooling (like autocompletion), but it also adds complexity and can slow down development. If you're working on a large project with many developers, TypeScript might be beneficial. If you're working on a small project or a prototype, JavaScript might be sufficient.
+
+// CourseForm.tsx
+import React, { useState, ChangeEvent, MouseEvent } from 'react';
+import useCourseStore from '../../zusttut/courseStore';
+
+interface Course {
+  id: number;
+  title: string;
+}
+
+const CourseForm: React.FC = () => {
+  const addCourse = useCourseStore((state) => state.addCourse);
+
+  const [courseTitle, setCourseTitle] = useState<string>('');
+
+  const handleCourseSubmit = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (!courseTitle) return alert('please add a course title');
+    addCourse({
+      id: Math.ceil(Math.random() * 1000000),
+      title: courseTitle,
+    });
+    setCourseTitle('');
+  };
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setCourseTitle(event.target.value);
+  };
+
+  return (
+    <div className="form-container">
+      <input
+        value={courseTitle}
+        onChange={handleInputChange}
+        className="form-input"
+      />
+      <button
+        onClick={handleCourseSubmit}
+        className="form-submit-btn"
+      >
+        Add Course
+      </button>
+    </div>
+  );
+};
+
+export default CourseForm;
+
+Here above the changes made are as follows for the CourseForm.jsx to CourseForm.tsx file:
+
+Imported ChangeEvent and MouseEvent from react to type the event handlers.
+Created an interface Course to type the course object.
+Changed the CourseForm component to use React.FC (Function Component) type.
+Added type MouseEvent<HTMLButtonElement> to the handleCourseSubmit function's parameter.
+Added type ChangeEvent<HTMLInputElement> to the handleInputChange function's parameter.
+Added event.preventDefault(); to the handleCourseSubmit function to prevent the form from refreshing the page, which is the default behavior of form submission in HTML.
+
+
+
+//CourseList.tsx:
+Sure, here's how you can convert your `CourseList` component to TypeScript (`.tsx`):
+
+```tsx
+import React, { ChangeEvent } from 'react';
+import useCourseStore from '../../zusttut/courseStore';
+
+interface Course {
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+const CourseList: React.FC = () => {
+  const { courses, removeCourse, toggleCourseStatus } = useCourseStore(
+    (state) => ({
+      courses: state.courses,
+      removeCourse: state.removeCourse,
+      toggleCourseStatus: state.toggleCourseStatus,
+    }),
+  );
+
+  const handleCheckboxChange = (courseId: number) => {
+    toggleCourseStatus(courseId);
+  };
+
+  const handleDeleteClick = (courseId: number) => {
+    removeCourse(courseId);
+  };
+
+  return (
+    <>
+      <ul>
+        {courses.map((course: Course) => (
+          <React.Fragment key={course.id}>
+            <li
+              className={`course-item`}
+              style={{
+                backgroundColor: course.completed ? '#00FF0044' : 'white',
+              }}
+            >
+              <span className="course-item-col-1">
+                <input
+                  checked={course.completed}
+                  type="checkbox"
+                  onChange={() => handleCheckboxChange(course.id)}
+                />
+              </span>
+              <span>{course.title}</span>
+              <button
+                onClick={() => handleDeleteClick(course.id)}
+                className="delete-btn"
+              >
+                Delete
+              </button>
+            </li>
+          </React.Fragment>
+        ))}
+      </ul>
+    </>
+  );
+};
+
+export default CourseList;
+```
+
+Here are the changes made to the `CourseList` component to convert it to TypeScript (`.tsx`) from JavaScript (`.jsx`):
+
+1. Imported `ChangeEvent` from `react` to type the event handlers.
+2. Created an interface `Course` to type the course object.
+3. Changed the `CourseList` component to use `React.FC` (Function Component) type.
+4. Added type `Course` to the `course` parameter in the `map` function.
+5. Created separate handlers for checkbox change and delete button click events for better readability and maintainability. These handlers take `courseId` as a parameter and call the respective store methods with it.
+
+
+
+
+index.js file - used main.js file @ kanban-zustand\src\main.jsx here
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import AppZusttut from './AppZusttut';
+import reportWebVitals from './reportWebVitals';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <AppZusttut />
+  </React.StrictMode>,
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
