@@ -1,8 +1,15 @@
+//supaStore.jsx
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import useSupabase from '../hooks/supabase';
+import { createClient } from '@supabase/supabase-js';
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_KEY;
+
+export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let store = (set) => ({
+  supabase,
   isLoggedIn: false,
   email: '',
   firstName: '',
@@ -10,13 +17,15 @@ let store = (set) => ({
   accessToken: '',
   setUserState: ({ isLoggedIn, email, firstName, lastName, accessToken }) =>
     set(() => ({ isLoggedIn, email, firstName, lastName, accessToken })),
-
   logout: async () => {
     console.log('logout action called');
     set({ isLoggedIn: false });
 
     // Log out from Supabase
-    await useSupabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error signing out:', error.message);
+    }
 
     // Update the state indicating that the user is logged out
     set({ isLoggedIn: false });

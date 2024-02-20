@@ -1,31 +1,45 @@
 // authStore.jsx
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import supabase from './supaStore'
 
-let authStore = (set, get) => ({
+
+let authStore = (set) => ({
   isAuthenticated: false,
-  users: [],
-  login: (email, password) => {
-    console.log('Trying to log in with', email, password);
-    const user = get().users.find(
-      (user) => user.email === email && user.password === password,
-    );
-    console.log('Found user:', user);
-    if (user) {
-      set({ isAuthenticated: true });
-      return 'Logged in successfully';
-    } else {
+  user: null,
+  login: async (email, password) => {
+    const { user, error } = await supabase.auth.signIn({ email, password });
+    if (error) {
+      console.error('Error logging in:', error.message);
       return 'Invalid email or password';
+    } else {
+      set({ isAuthenticated: true, user });
+      return 'Logged in successfully';
     }
   },
-  logout: () => {
-    console.log('logout action called');
-    set({ isAuthenticated: false });
+  logout: async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error logging out:', error.message);
+    } else {
+      set({ isAuthenticated: false, user: null });
+    }
   },
-  register: (email, password) => {
-    console.log('Registering user with', email, password);
-    set((state) => ({ users: [...state.users, { email, password }] }));
-    console.log('Current users:', get().users);
+  register: async (email, password) => {
+    const { user, error } = await supabase.auth.signUp({ email, password });
+    if (error) {
+      console.error('Error registering:', error.message);
+    } else {
+      set({ user });
+    }
+  },
+  resetPassword: async (email) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, 'http://localhost:5173/update-password');
+    if (error) {
+      console.error('Error resetting password:', error.message);
+    } else {
+      console.log('Password reset email sent to:', email);
+    }
   },
 });
 

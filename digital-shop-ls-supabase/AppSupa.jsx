@@ -6,6 +6,8 @@ import PublicRoutes from '../digital-shop-ls-supabase/routes/public';
 import NotFound from '../digital-shop-ls-supabase/pages/page404';
 import Navbar from '../digital-shop-ls-supabase/components/navbar';
 import Logout from '../digital-shop-ls-supabase/pages/logout';
+import ResetPassword from '../digital-shop-ls-supabase/pages/ResetPassword';
+import UpdatePassword from '../digital-shop-ls-supabase/pages/UpdatePassword';
 import { registerLicense } from '@syncfusion/ej2-base';
 
 // Registering Syncfusion license key
@@ -23,6 +25,9 @@ const App = () => {
           <Route path="product-list" element={<h1>Product List</h1>} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Signup />} />
+          <Route path="signup" element={<Signup />} /> {/* /signup or /register */}
+          <Route path="reset-password" element={<ResetPassword />} /> {/* Reset password */}
+          <Route path="update-password" element={<UpdatePassword />} />
         </Route>
         <Route path="logout" element={<Logout />} />
         <Route path="/dashboard" element={<PrivateRoutes />}>
