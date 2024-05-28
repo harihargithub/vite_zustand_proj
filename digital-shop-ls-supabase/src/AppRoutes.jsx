@@ -1,21 +1,24 @@
+// AppRoutes.jsx under src folderaa
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from '../digital-shop-ls-supabase/pages/signin';
-import Signup from '../digital-shop-ls-supabase/pages/signup';
-import PrivateRoutes from '../digital-shop-ls-supabase/routes/private';
-import PublicRoutes from '../digital-shop-ls-supabase/routes/public';
-import NotFound from '../digital-shop-ls-supabase/pages/page404';
-import Navbar from '../digital-shop-ls-supabase/components/navbar';
-import Logout from '../digital-shop-ls-supabase/pages/logout';
-import ResetPassword from '../digital-shop-ls-supabase/pages/ResetPassword';
-import UpdatePassword from '../digital-shop-ls-supabase/pages/UpdatePassword';
+import Login from './pages/signin';
+import Signup from './pages/signup';
+import PrivateRoutes from './routes/private';
+import PublicRoutes from './routes/public';
+import NotFound from './pages/page404';
+import Navbar from './components/navbar';
+import Logout from './pages/logout';
+import ResetPassword from './pages/ResetPassword';
+import UpdatePassword from './pages/UpdatePassword';
 import { registerLicense } from '@syncfusion/ej2-base';
+import Dashboard from './pages/Dashboard';
+import ManageProducts from './pages/ManageProducts';
 
 // Registering Syncfusion license key
 registerLicense(
   'ORg4AjUWIQA/Gnt2UVhhQlVFfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hTX5SdkFhW3xecXxUQWdb',
 );
 
-const App = () => {
+const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Navbar />
@@ -25,13 +28,14 @@ const App = () => {
           <Route path="product-list" element={<h1>Product List</h1>} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Signup />} />
-          <Route path="signup" element={<Signup />} /> {/* /signup or /register */}
-          <Route path="reset-password" element={<ResetPassword />} /> {/* Reset password */}
+          <Route path="signup" element={<Signup />} />
+          <Route path="reset-password" element={<ResetPassword />} />
           <Route path="update-password" element={<UpdatePassword />} />
         </Route>
         <Route path="logout" element={<Logout />} />
         <Route path="/dashboard" element={<PrivateRoutes />}>
-          <Route index element={<h1>Dashboard</h1>} />
+          <Route index element={<Dashboard />} /> {/* Dashboard route */}
+          <Route path="manage-products" element={<ManageProducts />} /> {/* Manage Products route */}
         </Route>
         <Route path="/app/*" element={<PrivateRoutes />}>
           <Route path="product-add" element={<h1>Product Add</h1>} />
@@ -45,4 +49,5 @@ const App = () => {
   );
 };
 
-export default App;
+export default AppRoutes;
+

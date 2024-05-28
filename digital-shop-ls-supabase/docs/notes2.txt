@@ -3991,3 +3991,47 @@ However, in a password reset flow, the user is typically not authenticated when 
 In your case, it seems like the user is already authenticated when they reset their password. This could happen if the user is logged in when they request the password reset, or if your application automatically logs in the user after they request the password reset.
 
 If you want to allow unauthenticated users to reset their password, you should use the `supabase.auth.api.updateUser` function with the token, as I described in my previous message. If you only want to allow authenticated users to reset their password, you can continue using the `supabase.auth.updateUser` function without the token.
+
+nharihar1@rediffmail.com  hare1234
+
+No, the `supabase.auth.updateUser` method requires an authenticated session, which means the user must be logged in. This method is typically used for allowing logged-in users to change their password.
+
+For password reset functionality (which is typically accessible to users who aren't logged in), you should use the `supabase.auth.api.updateUser` method with a recovery token. This token is typically sent to the user's email address and included in the password reset URL.
+
+Here's how you can modify the `handleUpdatePassword` function to use the recovery token:
+
+```jsx
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+
+// ...
+
+const UpdatePassword = () => {
+    const [password, setPassword] = useState('');
+    const location = useLocation();
+    const [recoveryToken, setRecoveryToken] = useState(null);
+
+    // Parse the URL query string to get the recovery token
+    useEffect(() => {
+        const query = new URLSearchParams(location.search);
+        setRecoveryToken(query.get('token'));
+    }, [location]);
+
+    const handleUpdatePassword = async () => {
+        if (recoveryToken) {
+            const { error } = await supabase.auth.api.updateUser(recoveryToken, { password });
+            if (error) {
+                console.error('Error updating password:', error.message);
+            } else {
+                console.log('Password updated successfully');
+            }
+        } else {
+            console.error('Recovery token is missing');
+        }
+    };
+
+    // ...
+};
+```
+
+In this updated function, `useLocation` from `react-router-dom` is used to get the current location, and `URLSearchParams` is used to parse the query string and get the recovery token. The `supabase.auth.api.updateUser` method is then called with the recovery token and the new password. If the recovery token is missing, the function logs an error message and does not attempt to update the password.

@@ -3,6 +3,10 @@ https://www.syncfusion.com/blogs/post/react-digital-ecommerce-app.aspx
 
 https://www.syncfusion.com/blogs/post/react-ecommerce-app-part-2.aspx
 
+https://www.syncfusion.com/blogs/post/react-ecommerce-app-part-3
+
+https://www.syncfusion.com/blogs/post/react-ecommerce-app-part-4
+
 npm create vite project-name --template react-ts
 cd project-name
 npm install 
@@ -85,3 +89,4 @@ Remember to import the necessary Syncfusion CSS files in each page to ensure the
 Please note that while Syncfusion provides a wide range of UI components, it does not provide a built-in solution for e-commerce functionality like payment processing or order management. You will need to implement these features yourself or integrate with a third-party service.
 
 
+nharihar1@rediffmail.com  hare1234
